@@ -9,5 +9,7 @@
         public int PhoneNumber { get; set; }
 
         public string Location { get; set; }
+
+        public virtual Pet Pet { get; set; }
     }
 }

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ODataVeterinary.Domain\ODataVeterinary.Domain.csproj" />
     <ProjectReference Include="..\ODataVeterinary.Shared.Model\ODataVeterinary.Shared.Model.csproj" />
   </ItemGroup>

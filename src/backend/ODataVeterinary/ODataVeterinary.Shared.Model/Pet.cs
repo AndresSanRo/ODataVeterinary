@@ -10,6 +10,6 @@ namespace ODataVeterinary.Shared.Model
 
         public string Species { get; set; }
 
-        public IList<Owner> Owners { get; set; }
+        public virtual IList<Owner> Owners { get; set; }
     }
 }
