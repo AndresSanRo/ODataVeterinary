@@ -10,6 +10,8 @@
 
         public string Location { get; set; }
 
+        public int PetId { get; set; }
+
         public virtual Pet Pet { get; set; }
     }
 }

@@ -12,8 +12,4 @@
     <ProjectReference Include="..\ODataVeterinary.Shared.Model\ODataVeterinary.Shared.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Script\" />
-  </ItemGroup>
-
 </Project>
