@@ -34,6 +34,7 @@ namespace ODataVeterinary
         {                        
             builder.RegisterType<PetDomain>().As<IPetDomain>();
             builder.RegisterType<PetRepository>().As<IPetRepository>();
+            builder.RegisterType<ODataVeterinaryDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
