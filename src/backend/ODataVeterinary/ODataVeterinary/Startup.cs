@@ -5,6 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ODataVeterinary.Data;
+using Autofac;
+using ODataVeterinary.Domain;
+using ODataVeterinary.Domain.Abstract;
+using ODataVeterinary.Infraestructure.Abstract;
+using ODataVeterinary.Infraestructure;
 
 namespace ODataVeterinary
 {
@@ -23,6 +28,12 @@ namespace ODataVeterinary
             services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {                        
+            builder.RegisterType<PetDomain>().As<IPetDomain>();
+            builder.RegisterType<PetRepository>().As<IPetRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

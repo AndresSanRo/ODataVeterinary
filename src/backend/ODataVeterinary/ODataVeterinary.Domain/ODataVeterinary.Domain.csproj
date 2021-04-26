@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ODataVeterinary.Domain.Abstract\ODataVeterinary.Domain.Abstract.csproj" />
     <ProjectReference Include="..\ODataVeterinary.Infraestructure\ODataVeterinary.Infraestructure.csproj" />
     <ProjectReference Include="..\ODataVeterinary.Shared.Model\ODataVeterinary.Shared.Model.csproj" />
   </ItemGroup>
