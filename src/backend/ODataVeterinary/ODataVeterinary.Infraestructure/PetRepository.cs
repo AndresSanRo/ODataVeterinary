@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ODataVeterinary.Data;
+﻿using ODataVeterinary.Data;
 using ODataVeterinary.Infraestructure.Abstract;
 using ODataVeterinary.Shared.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ODataVeterinary.Infraestructure
 {
@@ -16,9 +14,9 @@ namespace ODataVeterinary.Infraestructure
             this.DbContext = DbContext;
         }
 
-        public async Task<IList<Pet>> ListAll()
+        public IQueryable<Pet> ListAll()
         {
-            return await DbContext.Set<Pet>().AsQueryable().ToListAsync();            
+            return DbContext.Set<Pet>().AsQueryable();            
         }
     }
 }

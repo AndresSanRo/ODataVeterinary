@@ -1,11 +1,10 @@
 ﻿using ODataVeterinary.Shared.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ODataVeterinary.Infraestructure.Abstract
 {
     public interface IPetRepository
     {
-        Task<IList<Pet>> ListAll();
+        IQueryable<Pet> ListAll();
     }
 }

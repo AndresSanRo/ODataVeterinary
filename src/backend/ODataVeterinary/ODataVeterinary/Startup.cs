@@ -1,15 +1,19 @@
+using Autofac;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.Edm;
 using ODataVeterinary.Data;
-using Autofac;
 using ODataVeterinary.Domain;
 using ODataVeterinary.Domain.Abstract;
-using ODataVeterinary.Infraestructure.Abstract;
 using ODataVeterinary.Infraestructure;
+using ODataVeterinary.Infraestructure.Abstract;
+using ODataVeterinary.Shared.Model;
 
 namespace ODataVeterinary
 {
@@ -25,9 +29,10 @@ namespace ODataVeterinary
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOData();
+            services.AddODataQueryFilter();
             services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddControllers();
+            services.AddControllers(options => options.EnableEndpointRouting = false);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -57,10 +62,31 @@ namespace ODataVeterinary
 
             app.UseAuthorization();
 
+            app.UseMvc(routeBuilder =>
+            {
+                routeBuilder.Select().Filter();
+                routeBuilder.EnableDependencyInjection();
+                routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+        private IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+
+            builder.EntitySet<Pet>("Pet")
+                    .EntityType
+                    .Filter()
+                    .Count()
+                    .Expand()
+                    .OrderBy()
+                    .Page()
+                    .Select();
+            return builder.GetEdmModel();
         }
     }
 }

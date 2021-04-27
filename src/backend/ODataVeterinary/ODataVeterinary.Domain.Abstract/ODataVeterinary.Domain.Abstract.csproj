@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ODataVeterinary.Shared.Model\ODataVeterinary.Shared.Model.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,9 @@
-﻿using ODataVeterinary.Domain.Abstract;
+﻿using Microsoft.AspNet.OData.Query;
+using ODataVeterinary.Domain.Abstract;
 using ODataVeterinary.Infraestructure.Abstract;
 using ODataVeterinary.Shared.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ODataVeterinary.Domain
@@ -15,9 +17,10 @@ namespace ODataVeterinary.Domain
             this.PetRepository = PetRepository;
         }
 
-        public async Task<IList<Pet>> GetPets()
+        public async Task<IList<dynamic>> GetPets(ODataQueryOptions<Pet> filter)
         {
-            return await PetRepository.ListAll();
+            var query = (IQueryable<dynamic>)filter.ApplyTo(PetRepository.ListAll());
+            return query.ToList();
         }
     }
 }
