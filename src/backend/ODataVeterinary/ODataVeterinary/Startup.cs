@@ -32,7 +32,7 @@ namespace ODataVeterinary
             services.AddOData();
             services.AddODataQueryFilter();
             services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers(options => options.EnableEndpointRouting = false);
+            services.AddControllers(options => options.EnableEndpointRouting = false).AddNewtonsoftJson();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -63,10 +63,10 @@ namespace ODataVeterinary
             app.UseAuthorization();
 
             app.UseMvc(routeBuilder =>
-            {
-                routeBuilder.Select().Filter();
+            {                
                 routeBuilder.EnableDependencyInjection();
-                routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
+                routeBuilder.Select().Filter().OrderBy().Expand().Count().MaxTop(10);
+                routeBuilder.MapODataServiceRoute("api", "api", GetEdmModel());
             });
 
             app.UseEndpoints(endpoints =>
@@ -77,7 +77,6 @@ namespace ODataVeterinary
         private IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-
             builder.EntitySet<Pet>("Pet")
                     .EntityType
                     .Filter()
