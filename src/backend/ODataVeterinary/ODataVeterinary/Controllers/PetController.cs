@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
 using ODataVeterinary.Domain.Abstract;
@@ -19,10 +20,14 @@ namespace ODataVeterinary.API.Controllers
             this.PetDomain = PetDomain;
         }
 
-        [HttpGet]
+        [HttpGet]        
         public async Task<IActionResult> GetPets(ODataQueryOptions<Pet> filter)
         {
-            return Ok(await PetDomain.GetPets(filter));
+            var results = await PetDomain.GetPets(filter);
+            var page = new PageResult<dynamic>(results,
+                Request.HttpContext.ODataFeature().NextLink,
+                Request.HttpContext.ODataFeature().TotalCount);
+            return Ok(page);
         }
     }
 }

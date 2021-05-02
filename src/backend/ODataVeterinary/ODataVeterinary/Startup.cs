@@ -14,6 +14,7 @@ using ODataVeterinary.Domain.Abstract;
 using ODataVeterinary.Infraestructure;
 using ODataVeterinary.Infraestructure.Abstract;
 using ODataVeterinary.Shared.Model;
+using System;
 
 namespace ODataVeterinary
 {
@@ -65,8 +66,8 @@ namespace ODataVeterinary
             app.UseMvc(routeBuilder =>
             {                
                 routeBuilder.EnableDependencyInjection();
-                routeBuilder.Select().Filter().OrderBy().Expand().Count().MaxTop(10);
-                routeBuilder.MapODataServiceRoute("api", "api", GetEdmModel());
+                routeBuilder.Select().Filter().OrderBy().Expand().Count(Microsoft.AspNet.OData.Query.QueryOptionSetting.Allowed).MaxTop(10);
+                routeBuilder.MapODataServiceRoute("ODataRoute", "odata", GetEdmModel(app.ApplicationServices));
             });
 
             app.UseEndpoints(endpoints =>
@@ -74,9 +75,10 @@ namespace ODataVeterinary
                 endpoints.MapControllers();
             });
         }
-        private IEdmModel GetEdmModel()
+        private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
         {
-            var builder = new ODataConventionModelBuilder();
+            var builder = new ODataConventionModelBuilder(serviceProvider);
+
             builder.EntitySet<Pet>("Pet")
                     .EntityType
                     .Filter()
@@ -85,6 +87,7 @@ namespace ODataVeterinary
                     .OrderBy()
                     .Page()
                     .Select();
+
             return builder.GetEdmModel();
         }
     }
