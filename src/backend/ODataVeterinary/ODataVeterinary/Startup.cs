@@ -24,7 +24,7 @@ namespace ODataVeterinary
         {
             Configuration = configuration;
         }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,6 +34,10 @@ namespace ODataVeterinary
             services.AddODataQueryFilter();
             services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers(options => options.EnableEndpointRouting = false).AddNewtonsoftJson();
+            services.AddCors(c =>
+            {
+                c.AddPolicy(MyAllowSpecificOrigins, options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -60,6 +64,8 @@ namespace ODataVeterinary
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
