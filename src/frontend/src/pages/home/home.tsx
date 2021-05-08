@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
-import { PrimaryButton } from '@fluentui/react/lib/Button';
+import React, { useEffect, useState } from 'react';
 import { petApi } from '../../api';
+import { ODataResponse, Pet } from '../../models';
 
 const Home: React.FC = () => {
-	const [pets, setPets] = useState([]);
+	const [pets, setPets] = useState<Pet[]>([]);
 	const getPets = async () => {
-		const pets: any = await petApi.getPets('$count=true');
-		if (pets.items.lenght > 0) {
-			setPets(pets);
+		const pets: ODataResponse<Pet> = await petApi.getPets('$count=true');
+		if (pets.items.length > 0) {
+			setPets(pets.items);
 		}
 	};
-	return <PrimaryButton text={'get pets'} onClick={getPets} />;
+	useEffect(() => {
+		getPets();
+	}, []);
+	return (
+		<>
+			{pets.map((pet: Pet) => {
+				return <p>{pet.name?.toLocaleLowerCase()}</p>;
+			})}
+		</>
+	);
 };
 
 export default Home;

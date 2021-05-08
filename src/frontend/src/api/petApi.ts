@@ -1,4 +1,7 @@
-const getPets = async (ODataQuery?: string) => {
+import { Pet } from '../models';
+import { ODataResponse } from '../models/ODataResponse';
+
+const getPets = async (ODataQuery?: string): Promise<ODataResponse<Pet>> => {
 	const options = {
 		method: 'GET',
 		headers: {
