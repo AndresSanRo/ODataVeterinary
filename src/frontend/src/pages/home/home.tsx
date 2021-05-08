@@ -6,7 +6,7 @@ const Home: React.FC = () => {
 	const [pets, setPets] = useState<Pet[]>([]);
 	const getPets = async () => {
 		const pets: ODataResponse<Pet> = await petApi.getPets('$count=true');
-		if (pets.items.length > 0) {
+		if (pets && pets.items.length > 0) {
 			setPets(pets.items);
 		}
 	};
