@@ -12,7 +12,6 @@ const Home: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const { oDataQuery, oDataState, dispatchODataAction } = useOData({
     count: true,
-    //select: ["name", "age", "species", "id"],
   });
 
   useEffect(() => {
