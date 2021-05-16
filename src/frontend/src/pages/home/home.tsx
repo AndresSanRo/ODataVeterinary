@@ -30,6 +30,7 @@ const Home: React.FC = () => {
     count: true,
     top: 10,
     skip: 0,
+    select: ["id", "name", "age", "species"],
   });
 
   useEffect(() => {
