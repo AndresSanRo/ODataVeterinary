@@ -1,41 +1,50 @@
+import React from "react";
 import { IColumn } from "@fluentui/react/lib/DetailsList";
 import {
   DropdownMenuItemType,
   IDropdownOption,
 } from "@fluentui/react/lib/Dropdown";
 import { NavLink } from "react-router-dom";
+export const getColumns = (
+  columnClickFunction: (ev: any, column: IColumn) => void
+): IColumn[] => {
+  const columns: IColumn[] = [
+    {
+      key: "Name",
+      name: "Name",
+      fieldName: "Name",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true,
+      onColumnClick: columnClickFunction,
+    },
+    {
+      key: "Age",
+      name: "Age",
+      fieldName: "Age",
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true,
+      onColumnClick: columnClickFunction,
+    },
+    {
+      key: "Species",
+      name: "Species",
+      fieldName: "Species",
+      minWidth: 100,
+      isResizable: true,
+      onColumnClick: columnClickFunction,
+    },
+    {
+      key: "NavBtn",
+      name: "Detail",
+      fieldName: "ID",
+      minWidth: 100,
+    },
+  ];
+  return columns;
+};
 
-export const columns = [
-  {
-    key: "Name",
-    name: "Name",
-    fieldName: "Name",
-    minWidth: 100,
-    maxWidth: 200,
-    isResizable: true,
-  },
-  {
-    key: "Age",
-    name: "Age",
-    fieldName: "Age",
-    minWidth: 100,
-    maxWidth: 200,
-    isResizable: true,
-  },
-  {
-    key: "Species",
-    name: "Species",
-    fieldName: "Species",
-    minWidth: 100,
-    isResizable: true,
-  },
-  {
-    key: "NavBtn",
-    name: "Detail",
-    fieldName: "ID",
-    minWidth: 100,
-  },
-];
 export const renderColumn = (
   item?: any,
   index?: number | undefined,

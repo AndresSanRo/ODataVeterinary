@@ -8,11 +8,12 @@ import {
 import {
   DetailsList,
   DetailsListLayoutMode,
+  IColumn,
 } from "@fluentui/react/lib/components/DetailsList";
 import React, { useEffect, useState } from "react";
 import { petApi } from "../../api";
 import { ODataResponse, Pet } from "../../models";
-import { columns, petOptions, renderColumn } from "./petTableConsts";
+import { getColumns, petOptions, renderColumn } from "./petTableConsts";
 import { useOData, ODataActionTypes } from "./useOData";
 import "./home.scss";
 
@@ -94,6 +95,44 @@ const Home: React.FC = () => {
     });
   };
 
+  const columnClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn) => {
+    let fieldName: string = "";
+    if (column.key.toLowerCase() === "name") {
+      fieldName = "name";
+    }
+    if (column.key.toLowerCase() === "age") {
+      fieldName = "age";
+    }
+    if (column.key.toLowerCase() === "species") {
+      fieldName = "species";
+    }
+
+    if (
+      oDataState.orderBy &&
+      oDataState.orderBy.length > 0 &&
+      oDataState.orderBy[0].includes("asc")
+    ) {
+      dispatchODataAction({
+        type: ODataActionTypes.SetOrderBy,
+        payload: [`${fieldName} desc`],
+      });
+    } else if (
+      oDataState.orderBy &&
+      oDataState.orderBy.length > 0 &&
+      oDataState.orderBy[0].includes("desc")
+    ) {
+      dispatchODataAction({
+        type: ODataActionTypes.SetOrderBy,
+        payload: [],
+      });
+    } else {
+      dispatchODataAction({
+        type: ODataActionTypes.SetOrderBy,
+        payload: [`${fieldName} asc`],
+      });
+    }
+  };
+
   return (
     <>
       <h1>Pets</h1>
@@ -130,7 +169,7 @@ const Home: React.FC = () => {
       <DetailsList
         compact={true}
         items={pets}
-        columns={columns}
+        columns={getColumns(columnClick)}
         layoutMode={DetailsListLayoutMode.justified}
         onRenderItemColumn={renderColumn}
       />
