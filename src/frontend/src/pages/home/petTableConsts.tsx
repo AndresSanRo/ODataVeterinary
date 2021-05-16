@@ -1,10 +1,8 @@
-import React from "react";
 import { IColumn } from "@fluentui/react/lib/DetailsList";
-import {
-  DropdownMenuItemType,
-  IDropdownOption,
-} from "@fluentui/react/lib/Dropdown";
+import { IDropdownOption } from "@fluentui/react/lib/Dropdown";
+import React from "react";
 import { NavLink } from "react-router-dom";
+
 export const getColumns = (
   columnClickFunction: (ev: any, column: IColumn) => void
 ): IColumn[] => {

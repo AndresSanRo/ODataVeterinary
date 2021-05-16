@@ -11,13 +11,13 @@ import {
   IColumn,
 } from "@fluentui/react/lib/components/DetailsList";
 import React, { useEffect, useState } from "react";
-import { petApi } from "../../api";
-import { ODataResponse, Pet } from "../../models";
-import { getColumns, petOptions, renderColumn } from "./petTableConsts";
-import { useOData, ODataActionTypes } from "./useOData";
-import "./home.scss";
 import Pagination from "react-js-pagination";
+import { petApi } from "../../api";
 import "../../assets/bootstrap/css/bootstrap.min.css";
+import { ODataResponse, Pet } from "../../models";
+import "./home.scss";
+import { getColumns, petOptions, renderColumn } from "./petTableConsts";
+import { ODataActionTypes, useOData } from "./useOData";
 
 const Home: React.FC = () => {
   const [pets, setPets] = useState<ODataResponse<Pet>>();
