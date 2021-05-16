@@ -1,4 +1,8 @@
 import { IColumn } from "@fluentui/react/lib/DetailsList";
+import {
+  DropdownMenuItemType,
+  IDropdownOption,
+} from "@fluentui/react/lib/Dropdown";
 import { NavLink } from "react-router-dom";
 
 export const columns = [
@@ -51,3 +55,38 @@ export const renderColumn = (
     );
   }
 };
+
+export const petOptions: IDropdownOption[] = [
+  {
+    key: "Cat",
+    text: "Cat",
+  },
+  {
+    key: "Dog",
+    text: "Dog",
+  },
+  {
+    key: "Ferret",
+    text: "Ferret",
+  },
+  {
+    key: "Goldenfish",
+    text: "Goldenfish",
+  },
+  {
+    key: "Hamster",
+    text: "Hamster",
+  },
+  {
+    key: "Parrot",
+    text: "Parrot",
+  },
+  {
+    key: "Snake",
+    text: "Snake",
+  },
+  {
+    key: "Turtle",
+    text: "Turtle",
+  },
+];
