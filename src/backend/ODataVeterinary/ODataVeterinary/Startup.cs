@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
+using Newtonsoft.Json.Serialization;
 using ODataVeterinary.Data;
 using ODataVeterinary.Domain;
 using ODataVeterinary.Domain.Abstract;
@@ -32,8 +33,8 @@ namespace ODataVeterinary
         {
             services.AddOData();
             services.AddODataQueryFilter();
-            services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers(options => options.EnableEndpointRouting = false).AddNewtonsoftJson();
+            services.AddDbContext<ODataVeterinaryDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));            
+            services.AddControllers(options => options.EnableEndpointRouting = false).AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddCors(c =>
             {
                 c.AddPolicy(MyAllowSpecificOrigins, options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
