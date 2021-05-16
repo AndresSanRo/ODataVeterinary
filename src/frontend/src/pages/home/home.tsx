@@ -16,11 +16,14 @@ import { ODataResponse, Pet } from "../../models";
 import { getColumns, petOptions, renderColumn } from "./petTableConsts";
 import { useOData, ODataActionTypes } from "./useOData";
 import "./home.scss";
+import Pagination from "react-js-pagination";
+import "../../assets/bootstrap/css/bootstrap.min.css";
 
 const Home: React.FC = () => {
-  const [pets, setPets] = useState<Pet[]>([]);
+  const [pets, setPets] = useState<ODataResponse<Pet>>();
   const [filterName, setFilterName] = useState<string | undefined>(undefined);
   const [filterAge, setFilterAge] = useState<number | undefined>(undefined);
+  const [page, setPage] = useState<number>(1);
   const [filterSpecies, setFilterSpecies] =
     useState<string | undefined>(undefined);
   const { oDataQuery, oDataState, dispatchODataAction } = useOData({
@@ -32,8 +35,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     const getPets = async () => {
       const pets: ODataResponse<Pet> = await petApi.getPets(oDataQuery);
-      if (pets && pets.items.length > 0) {
-        setPets(pets.items);
+      if (pets) {
+        setPets(pets);
       }
     };
     getPets();
@@ -79,16 +82,18 @@ const Home: React.FC = () => {
     }
     if (filters.length > 0) {
       dispatchODataAction({
-        type: ODataActionTypes.SetFilter,
-        payload: filters,
+        type: ODataActionTypes.SetOData,
+        payload: { filter: filters, orderBy: oDataState.orderBy, skip: 0 },
       });
     }
+    setPage(1);
   };
 
   const clearFilters = (): void => {
     setFilterName(undefined);
     setFilterAge(undefined);
     setFilterSpecies(undefined);
+    setPage(1);
     dispatchODataAction({
       type: ODataActionTypes.SetOData,
       payload: { count: true, top: 10, skip: 0, filter: [] },
@@ -113,8 +118,12 @@ const Home: React.FC = () => {
       oDataState.orderBy[0].includes("asc")
     ) {
       dispatchODataAction({
-        type: ODataActionTypes.SetOrderBy,
-        payload: [`${fieldName} desc`],
+        type: ODataActionTypes.SetOData,
+        payload: {
+          orderBy: [`${fieldName} desc`],
+          skip: 0,
+          filter: oDataState.filter,
+        },
       });
     } else if (
       oDataState.orderBy &&
@@ -122,15 +131,29 @@ const Home: React.FC = () => {
       oDataState.orderBy[0].includes("desc")
     ) {
       dispatchODataAction({
-        type: ODataActionTypes.SetOrderBy,
-        payload: [],
+        type: ODataActionTypes.SetOData,
+        payload: { orderBy: [], skip: 0, filter: oDataState.filter },
       });
     } else {
       dispatchODataAction({
-        type: ODataActionTypes.SetOrderBy,
-        payload: [`${fieldName} asc`],
+        type: ODataActionTypes.SetOData,
+        payload: {
+          orderBy: [`${fieldName} asc`],
+          skip: 0,
+          filter: oDataState.filter,
+        },
       });
     }
+    setPage(1);
+  };
+
+  const onPageChange = (pageNumber: number) => {
+    const skip: number = pageNumber > 1 ? (pageNumber - 1) * 10 : 0;
+    setPage(pageNumber);
+    dispatchODataAction({
+      type: ODataActionTypes.SetSkip,
+      payload: skip,
+    });
   };
 
   return (
@@ -168,11 +191,20 @@ const Home: React.FC = () => {
       </div>
       <DetailsList
         compact={true}
-        items={pets}
+        items={pets?.items ? pets.items : []}
         columns={getColumns(columnClick)}
         layoutMode={DetailsListLayoutMode.justified}
         onRenderItemColumn={renderColumn}
       />
+      <div className={"paginationArea"}>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={10}
+          totalItemsCount={pets?.count ? pets.count : 0}
+          pageRangeDisplayed={5}
+          onChange={onPageChange}
+        />
+      </div>
     </>
   );
 };
