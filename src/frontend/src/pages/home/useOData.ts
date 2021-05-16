@@ -56,7 +56,7 @@ const ODataReducer = (state: ODataState, action: ODataAction): ODataState => {
     case ODataActionTypes.SetCount:
       return { ...state, count: action.payload as boolean };
     case ODataActionTypes.SetOData:
-      return action.payload as ODataState;
+      return { ...state, ...(action.payload as ODataState) };
     default:
       return state;
   }
