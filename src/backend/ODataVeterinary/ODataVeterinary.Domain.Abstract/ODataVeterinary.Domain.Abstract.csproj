@@ -5,12 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ODataVeterinary.Data\ODataVeterinary.Data.csproj" />
-    <ProjectReference Include="..\ODataVeterinary.Infraestructure.Abstract\ODataVeterinary.Infraestructure.Abstract.csproj" />
     <ProjectReference Include="..\ODataVeterinary.Shared.Model\ODataVeterinary.Shared.Model.csproj" />
   </ItemGroup>
 
